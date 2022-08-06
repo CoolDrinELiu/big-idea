@@ -1,0 +1,19 @@
+<div class="flex flex-row justify-between">
+  <ul class="flex border-b pt-5">
+      <li class="-mb-px mr-1">
+        <%= link_to 'All Groups', root_path(tab: "all"), class: "bg-white inline-block rounded-t py-2 px-4 text-blue-700 font-semibold #{active_tab_class 'all'}" %>
+      </li>
+      <li class="mr-1">
+        <%= link_to 'Created By Me', root_path(tab: "mine"), class: "bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold #{active_tab_class 'mine'}" %>
+      </li>
+      <li class="mr-1">
+        <%= link_to 'Where I am member', root_path(tab: "member"), class: "bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold #{active_tab_class 'member'}" %>
+      </li>
+  </ul>
+  <%= link_to new_group_path do %>
+    <button class="py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Create a new group
+    </button>
+  <% end %>
+</div>
+
