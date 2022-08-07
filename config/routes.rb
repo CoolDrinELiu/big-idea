@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   root "groups#index"
 
-  resources :groups, :only => [:index, :new] do
+  resources :groups, :only => [:index, :create, :edit, :update] do
     member do
       put :join
       delete :quit

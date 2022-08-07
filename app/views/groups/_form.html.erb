@@ -1,0 +1,36 @@
+<% target = @group || Group.new %>
+<% option_attrs = @group.present? ? { turbo: false } : {} %>
+<%= form_for target, class: "space-y-6", data: option_attrs do |f| %>
+  <div>
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Group Name</label>
+    <%= f.text_field :name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" %>
+  </div>
+  <div class="mt-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Access Control</label>
+
+    <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="flex items-center pl-3">
+            <%= f.radio_button :access_control, "in_public", checked: target.in_public?, id: "group-access-control-option-public" %>
+            <label for="group-access-control-option-public" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Public</label>
+        </div>
+      </li>
+      <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="flex items-center pl-3">
+          <%= f.radio_button :access_control, "in_private", checked: target.in_private?, id: "group-access-control-option-private" %>
+          <label for="group-access-control-option-private" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Private</label>
+        </div>
+      </li>
+      <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+        <div class="flex items-center pl-3">
+          <%= f.radio_button :access_control, "in_secret", checked: target.in_secret?, id: "group-access-control-option-secret" %>
+          <label for="group-access-control-option-secret" class="py-3 ml-2 w-full text-sm font-medium text-gray-900 dark:text-gray-300">Secret</label>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+  <%= f.submit "Save", class: "mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+    data: { "turbo-method": "post", turbo_frame: "group_create" }
+  %>
+<% end %>
