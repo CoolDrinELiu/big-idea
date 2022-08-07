@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_06_091723) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_07_121204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_091723) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "access_control", default: 0
+    t.integer "posts_count", default: 0
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.integer "user_id"
+    t.text "content"
+    t.string "title"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_group_relationships", force: :cascade do |t|
@@ -49,6 +59,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_091723) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -7,5 +7,6 @@ class User < ApplicationRecord
   has_many :user_group_relationships
   has_many :owned_groups, class_name: "Group", foreign_key: :user_id
   has_many :member_groups, through: :user_group_relationships, foreign_key: 'user_id', source: :group
+  has_many :group_requests
 
 end

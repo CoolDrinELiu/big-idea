@@ -1,7 +1,8 @@
 class Group < ApplicationRecord
-  has_many :user_group_relationships
+  has_many :user_group_relationships, dependent: :destroy
   has_many :members, through: :user_group_relationships, source: :user, dependent: :destroy
   has_many :group_requests
+  has_many :posts
 
   after_create :put_owner_in_members
 
@@ -23,6 +24,10 @@ class Group < ApplicationRecord
     update(user_id: nil)
   end
 
+  def kick_out_member! user_id
+    user_group_relationships.where(user_id: user_id).destroy_all
+  end
+
   def quit! user
     return if user.blank?
     Group.transaction do
@@ -37,6 +42,17 @@ class Group < ApplicationRecord
     relation.save
   end
 
+  def request_join! user
+    request = group_requests.new(user_id: user.id)
+    request.save
+  end
+
+  def can_access_by? user
+    return false if user.blank?
+    return true if user.id == user_id
+    return true if has_member? user.id
+    return false
+  end
   private
 
   def put_owner_in_members

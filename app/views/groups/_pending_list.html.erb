@@ -1,0 +1,10 @@
+<ul class="max-h-96 overflow-y-auto w-48 max-w-2xl text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 dark:bg-gray-500 dark:border-gray-600 dark:text-white">
+  <% @pending_requests&.each do |req| %>
+    <li class="py-2 px-4 w-full rounded-t-lg border-b border-gray-200 dark:border-gray-600">
+      <span class="pr-4"><%= req.user.name %></span>
+      <% if @is_admin %>
+        <%= button_to "✔", approve_member_group_path(id: req), form_class: "inline", form: {data: { turbo_confirm: "Are you sure?" }}, method: :put, turbo_frame: "group_member_list" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

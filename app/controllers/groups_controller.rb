@@ -1,7 +1,33 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :edit, :update, :join, :quit]
+  before_action :authenticate_user!, only: [:create, :edit, :update, :join, :quit, :show, :remove_member]
+
   def index
     get_list_records
+    @pending_request_ids = current_user&.group_requests&.pending&.map(&:group_id)
+  end
+
+  def show
+    @group = Group.find(params[:id])
+
+    authenticate_user_from_group!
+
+    @is_admin = @group.owned_by?(current_user)
+
+    @pending_requests = @group.group_requests.pending if @is_admin
+
+    @pagy, @posts =
+      if user_signed_in?
+        case params[:tab]
+        when 'owned'
+          pagy(current_user.owned_groups)
+        when 'member'
+          pagy(current_user.member_groups)
+        else
+          pagy(Group.all)
+        end
+      else
+        pagy(Group.all)
+      end
   end
 
   def create
@@ -41,13 +67,33 @@ class GroupsController < ApplicationController
     end
   end
 
+  def remove_member
+    @group = current_user.owned_groups.find(params[:id])
+    @group.kick_out_member! params[:user_id_to_kick]
+    @is_admin = @group.owned_by?(current_user)
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   def join
-    # Public scope, for only public groups
-    group = Group.in_public.find_by(id: params[:id])
-    group.join! current_user if group
+    group = Group.find(params[:id])
+    if group.in_public?
+      group.join! current_user
+    elsif group.in_private?
+      group.request_join! current_user
+    end
     respond_to do |format|
       format.html { redirect_to root_path, status: 303 }
     end
+  end
+
+  def approve_member
+    @req = GroupRequest.find(params[:id])
+    @req.add_member!
+    group = current_user.owned_groups.find(@req.group_id)
+    @is_admin = group.owned_by?(current_user)
+    @pending_requests = group.group_requests.pending
   end
 
   private
@@ -69,5 +115,12 @@ class GroupsController < ApplicationController
       else
         pagy(Group.all)
       end
+  end
+
+  def authenticate_user_from_group!
+    unless @group.can_access_by? current_user
+      flash[:error] = "You are not allowed to visit this group yet."
+      redirect_to root_path
+    end
   end
 end

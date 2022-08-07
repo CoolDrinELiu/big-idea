@@ -14,10 +14,12 @@ Rails.application.routes.draw do
 
   root "groups#index"
 
-  resources :groups, :only => [:index, :create, :edit, :update] do
+  resources :groups, :only => [:index, :create, :edit, :update, :show] do
     member do
       put :join
       delete :quit
+      delete :remove_member
+      put :approve_member
     end
   end
 end
