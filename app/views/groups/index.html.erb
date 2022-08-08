@@ -1,5 +1,14 @@
 <div class="flex-col w-full">
-  <h1 class="font-bold text-4xl">Groups</h1>
+  <div class="flex flex-row justify-between">
+    <h1 class="font-bold text-4xl">Groups</h1>
+    <% if user_signed_in? %>
+      <button data-modal-toggle="new-group-modal" class="py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Create a new group
+      </button>
+    <% else %>
+      <%= button_to 'Create a new group', new_user_session_path, class: "py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800", method: :get, data: {turbo: false} %>
+    <% end %>
+  </div>
   <%= turbo_frame_tag "group_list" do %>
     <%= render "filters" %>
     <%= render "list" %>
