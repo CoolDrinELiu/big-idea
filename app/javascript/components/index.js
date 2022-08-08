@@ -1,10 +1,21 @@
-// import { render } from "react-dom"
-// import h from "components/htm_create_element"
+import { render } from "react-dom"
+import h from "components/htm_create_element"
 
-// import Hello from "components/hello"
+import Wysiwyg from "components/wysiwyg"
 
-// render(
-//     h `<${Hello}/>`,
+const target1 = document.getElementById("wysiwyg-box-post")
+const target2 = document.getElementById("wysiwyg-box-comment")
 
-//     document.getElementById("root")
-// )
+if(target1 !== null){
+  render(
+    h `<${Wysiwyg} name=${ 'post[content]' } />`,
+    document.getElementById("wysiwyg-box-post")
+  )
+}
+
+if(target2 !== null){
+  render(
+    h `<${Wysiwyg} name=${ 'comment[content]' } />`,
+    document.getElementById("wysiwyg-box-comment")
+  )
+}

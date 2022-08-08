@@ -1,0 +1,14 @@
+<% @posts.each do |post| %>
+  <div class="mt-5 block p-6 dark:text-white max-w-4xl bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <%= link_to post_path(post), data: { turbo: false } do %>
+        <h5 class="break-words mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= post.title %></h5>
+        <p class="break-words"><%= raw(post.content) %></p>
+      <% end %>
+  </div>
+<% end %>
+
+<% if @posts.present? %>
+  <div class="p-5">
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% end %>

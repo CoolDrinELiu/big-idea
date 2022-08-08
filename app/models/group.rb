@@ -6,6 +6,8 @@ class Group < ApplicationRecord
 
   after_create :put_owner_in_members
 
+  scope :created_at_desc, -> { order(created_at: :desc) }
+
   enum access_control: {in_public: 0, in_private: 1, in_secret: 2}
 
   def has_member? user_id

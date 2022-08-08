@@ -1,0 +1,16 @@
+<% @comments.each do |comment| %>
+  <div class="mt-4 block p-6 max-w-fit bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:border-gray-700">
+    <p class="mb-2 tracking-tight">
+      <%= raw comment.content %>
+    </p>
+    <span class="font-normal text-gray-700 dark:text-gray-400">
+      Commented <%= time_ago_in_words comment.updated_at %> ago. By <strong><%= comment.user&.name %></strong>
+      <% if comment.reply_id %>
+        . Reply to <strong><%= comment.reply&.user&.name %></strong>
+      <% end %>
+      <% if comment.user_id != current_user.id %>
+        | <strong><span data-controller="comment" data-action="click->comment#set_reply_id" class="cursor-pointer click-reply" data-uname="<%= comment.user&.name %>" data-vid="<%= comment.user_id %>">Reply</span></strong>
+      <% end %>
+    </span>
+  </div>
+<% end %>

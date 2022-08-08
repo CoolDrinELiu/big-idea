@@ -15,19 +15,7 @@ class GroupsController < ApplicationController
 
     @pending_requests = @group.group_requests.pending.active.includes([:user]) if @is_admin
 
-    @pagy, @posts =
-      if user_signed_in?
-        case params[:tab]
-        when 'owned'
-          pagy(current_user.owned_groups)
-        when 'member'
-          pagy(current_user.member_groups)
-        else
-          pagy(Group.all)
-        end
-      else
-        pagy(Group.all)
-      end
+    @pagy, @posts = pagy(@group.posts.created_at_desc)
   end
 
   def create
@@ -156,21 +144,15 @@ class GroupsController < ApplicationController
       if user_signed_in?
         case params[:tab]
         when 'owned'
-          pagy(current_user.owned_groups)
+          pagy(current_user.owned_groups.created_at_desc)
         when 'member'
-          pagy(current_user.member_groups)
+          pagy(current_user.member_groups.created_at_desc)
         else
-          pagy(Group.all)
+          pagy(Group.all.created_at_desc)
         end
       else
-        pagy(Group.all)
+        pagy(Group.all.created_at_desc)
       end
   end
 
-  def authenticate_user_from_group!
-    unless @group.can_access_by? current_user
-      flash[:error] = "You are not allowed to visit this group yet."
-      redirect_to root_path, status: 303
-    end
-  end
 end

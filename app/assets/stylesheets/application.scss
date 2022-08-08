@@ -13,6 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+ @import 'trix';
+
  .square {
   background: #fff;
   border: 1px solid #999;
@@ -26,4 +29,9 @@
   padding: 0;
   text-align: center;
   width: 34px;
+}
+
+trix-editor {
+  min-height: 200px !important;
+  overflow-y: auto;
 }

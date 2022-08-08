@@ -5,3 +5,5 @@ import "controllers"
 import "components"
 
 import 'flowbite'
+
+import 'trix'

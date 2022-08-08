@@ -8,5 +8,7 @@ class User < ApplicationRecord
   has_many :owned_groups, class_name: "Group", foreign_key: :user_id
   has_many :member_groups, through: :user_group_relationships, foreign_key: 'user_id', source: :group
   has_many :group_requests
+  has_many :posts
+  has_many :comments
 
 end
