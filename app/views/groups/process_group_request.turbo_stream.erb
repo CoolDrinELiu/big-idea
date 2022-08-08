@@ -1,0 +1,7 @@
+<%= turbo_stream.remove("pending_request_#{@req.id}") do %>
+  <%= render partial: "pending_list" %>
+<% end %>
+
+<%= turbo_stream.update("member_list") do %>
+  <%= render partial: "member_list" %>
+<% end %>

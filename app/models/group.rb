@@ -2,7 +2,7 @@ class Group < ApplicationRecord
   has_many :user_group_relationships, dependent: :destroy
   has_many :members, through: :user_group_relationships, source: :user, dependent: :destroy
   has_many :group_requests, dependent: :destroy
-  has_many :posts
+  has_many :posts, dependent: :destroy
 
   after_create :put_owner_in_members
 

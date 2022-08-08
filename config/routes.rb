@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       passwords: "users/passwords"
     }
   # mount Base => "/"
-  # root 'components#index'
+  get 'components', to: 'components#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -20,11 +20,13 @@ Rails.application.routes.draw do
       post :invite
       delete :quit
       delete :remove_member
-      put :approve_member
+      put :process_group_request
     end
     collection do
       put :reject
       put :accept
     end
   end
+
+  resources :posts, :only => [:show, :create, :edit, :update]
 end

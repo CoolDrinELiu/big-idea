@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
 
     @is_admin = @group.owned_by?(current_user)
 
-    @pending_requests = @group.group_requests.pending.active if @is_admin
+    @pending_requests = @group.group_requests.pending.active.includes([:user]) if @is_admin
 
     @pagy, @posts =
       if user_signed_in?
@@ -76,6 +76,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # To join a group
   def join
     group = Group.find(params[:id])
     if group.in_public?
@@ -88,6 +89,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # To invite people
   def invite
     @group = Group.find(params[:id])
 
@@ -106,6 +108,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # For invitation
   def reject
     request = current_user.group_requests.find(params[:request_id])
     request.rejected!
@@ -114,6 +117,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # For invitation
   def accept
     request = current_user.group_requests.find(params[:request_id])
     request.accept_the_invitation!
@@ -122,11 +126,23 @@ class GroupsController < ApplicationController
     end
   end
 
-  def approve_member
+  # Approve or reject a group request
+  def process_group_request
     @req = GroupRequest.find(params[:id])
-    @req.add_member!
+    @group = Group.find @req.group_id
+    @is_admin = @group.owned_by?(current_user)
+
+    unless @is_admin
+      flash[:error] = "You are not allowed to do this."
+      redirect_to root_path, status: 303
+    end
+
+    if params[:decision] == "approve"
+      @req.add_member!
+    else
+      @req.rejected!
+    end
     group = current_user.owned_groups.find(@req.group_id)
-    @is_admin = group.owned_by?(current_user)
     @pending_requests = group.group_requests.pending
   end
 
@@ -154,7 +170,7 @@ class GroupsController < ApplicationController
   def authenticate_user_from_group!
     unless @group.can_access_by? current_user
       flash[:error] = "You are not allowed to visit this group yet."
-      redirect_to root_path
+      redirect_to root_path, status: 303
     end
   end
 end
