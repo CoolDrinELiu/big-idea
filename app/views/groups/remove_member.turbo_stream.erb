@@ -1,3 +1,1 @@
-<%= turbo_stream.replace("member_list") do %>
-  <%= render partial: "member_list" %>
-<% end %>
+<%= turbo_stream.remove("group_member_#{params[:user_id_to_kick]}") %>

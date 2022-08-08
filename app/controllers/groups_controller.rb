@@ -1,9 +1,9 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :edit, :update, :join, :quit, :show, :remove_member]
+  before_action :authenticate_user!, only: [:create, :edit, :update, :join, :quit, :show, :remove_member, :invite]
 
   def index
     get_list_records
-    @pending_request_ids = current_user&.group_requests&.pending&.map(&:group_id)
+    @pending_requests = current_user&.group_requests&.pending
   end
 
   def show
@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
 
     @is_admin = @group.owned_by?(current_user)
 
-    @pending_requests = @group.group_requests.pending if @is_admin
+    @pending_requests = @group.group_requests.pending.active if @is_admin
 
     @pagy, @posts =
       if user_signed_in?
@@ -83,6 +83,40 @@ class GroupsController < ApplicationController
     elsif group.in_private?
       group.request_join! current_user
     end
+    respond_to do |format|
+      format.html { redirect_to root_path, status: 303 }
+    end
+  end
+
+  def invite
+    @group = Group.find(params[:id])
+
+    authenticate_user_from_group!
+
+    user_to_invite = User.find_by(email: params[:email])
+    @invite_stauts =
+      if user_to_invite
+        @group.request_join! user_to_invite, "passive", current_user.id
+        :done
+      else
+        :failed
+      end
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def reject
+    request = current_user.group_requests.find(params[:request_id])
+    request.rejected!
+    respond_to do |format|
+      format.html { redirect_to root_path, status: 303 }
+    end
+  end
+
+  def accept
+    request = current_user.group_requests.find(params[:request_id])
+    request.accept_the_invitation!
     respond_to do |format|
       format.html { redirect_to root_path, status: 303 }
     end

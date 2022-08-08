@@ -17,9 +17,14 @@ Rails.application.routes.draw do
   resources :groups, :only => [:index, :create, :edit, :update, :show] do
     member do
       put :join
+      post :invite
       delete :quit
       delete :remove_member
       put :approve_member
+    end
+    collection do
+      put :reject
+      put :accept
     end
   end
 end

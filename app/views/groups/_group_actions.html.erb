@@ -1,0 +1,27 @@
+<% if user_signed_in? %>
+  <% if group.has_member? current_user&.id %>
+    <%= button_to "Quit", quit_group_path(group), class: "focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900", form: {data: { turbo_confirm: "This will remove you out of members, are you sure?" }}, method: :delete %>
+  <% elsif group.in_private? %>
+    <% if @pending_requests&.active&.map(&:id)&.include? group.id%>
+        <button type="button" class="text-white bg-gray-400 dark:bg-gray-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled="">
+          Request Pending...
+        </button>
+    <% else %>
+      <%= button_to "Request Join", join_group_path(group), class: "focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800", method: :put %>
+    <% end %>
+  <% elsif group.in_public? %>
+    <%= button_to "Join", join_group_path(group), class: "focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800", method: :put %>
+  <% elsif group.in_secret? %>
+    <% if has_been_invited_by? group %>
+      <%= button_to "Accept invitation", accept_groups_path(request_id: inviting_request_of(group)), class: "focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800", method: :put %>
+      <%= button_to "Reject invitation", reject_groups_path(request_id: inviting_request_of(group)), class: "focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900", method: :put %>
+    <% else %>
+      <span class="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Secret Group</span>
+    <% end %>
+  <% end %>
+  <% if group.owned_by? current_user %>
+    <%= link_to "Edit", edit_group_path(group), class: "focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900", data: {turbo: false} %>
+  <% end %>
+<% else %>
+  <%= button_to 'Sign in to join', new_user_session_path, class: "text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800", method: :get, data: {turbo: false} %>
+<% end %>

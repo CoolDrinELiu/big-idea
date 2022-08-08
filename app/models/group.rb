@@ -30,7 +30,7 @@ class Group < ApplicationRecord
 
   def quit! user
     return if user.blank?
-    Group.transaction do
+    transaction do
       user_group_relationships.where(user_id: user.id, group_id: id).destroy_all
       remove_owner if user_id == user.id
     end
@@ -42,8 +42,8 @@ class Group < ApplicationRecord
     relation.save
   end
 
-  def request_join! user
-    request = group_requests.new(user_id: user.id)
+  def request_join! user, direction = "active", inviter_id = nil
+    request = group_requests.new(user_id: user.id, direction: direction, inviter_id: inviter_id)
     request.save
   end
 

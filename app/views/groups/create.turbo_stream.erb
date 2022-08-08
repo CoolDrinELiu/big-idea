@@ -1,8 +1,8 @@
-<%= turbo_stream.append("group_create") do %>
+<%= turbo_stream.update("group_create_prompt") do %>
   <%= render partial: "notification", locals: { message: @message, message_type: @message_type } %>
 <% end %>
 
-<%= turbo_stream.replace("group_list") do %>
+<%= turbo_stream.update("group_list") do %>
   <%= render partial: "filters" %>
   <%= render partial: "list" %>
 <% end %>
