@@ -19,3 +19,5 @@ pin "process", to: "https://ga.jspm.io/npm:@jspm/core@2.0.0-beta.24/nodelibs/bro
 pin "scheduler", to: "https://ga.jspm.io/npm:scheduler@0.23.0/index.js"
 pin "flowbite", to: "https://ga.jspm.io/npm:flowbite@1.5.1/dist/flowbite.js"
 pin "trix", to: "https://ga.jspm.io/npm:trix@2.0.0-beta.0/dist/trix.js"
+pin "@rails/actioncable", to: "actioncable.esm.js"
+pin_all_from "app/javascript/channels", under: "channels"

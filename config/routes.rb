@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'notifications/index'
   devise_for :users,
     controllers: {
       sessions: "users/sessions",
@@ -30,4 +31,6 @@ Rails.application.routes.draw do
 
   resources :posts, :only => [:show, :create, :edit, :update, :destroy]
   resources :comments, :only => [:create, :edit, :destroy, :update]
+
+  resources :notifications, :only => [:index]
 end

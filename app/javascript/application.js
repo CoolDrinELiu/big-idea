@@ -6,4 +6,4 @@ import "components"
 
 import 'flowbite'
 
-import 'trix'
+import 'trix'import "channels"
