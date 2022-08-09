@@ -15,7 +15,6 @@
     <% end %>
   </div>
   <div class="w-2/3 mt-5 block">
-
     <%= form_for Comment.new, class: "space-y-6" do |f| %>
       <%= f.hidden_field :post_id, value: @post.id %>
       <%= f.hidden_field :reply_id %>

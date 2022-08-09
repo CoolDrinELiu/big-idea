@@ -6,7 +6,16 @@
     <span class="font-normal text-gray-700 dark:text-gray-400">
       Commented <%= time_ago_in_words comment.updated_at %> ago. By <strong><%= comment.user&.name %></strong>
       <% if comment.reply_id %>
-        . Reply to <strong><%= comment.reply&.user&.name %></strong>
+        <% reply_to_me = comment.reply_to.id == current_user.id %>
+        . Replied to <strong>
+          <% if reply_to_me %>
+            <span class="text-rose-700">
+              Me
+            </span>
+          <% else%>
+            <%= comment.reply_to&.name %>
+          <% end %>
+        </strong>
       <% end %>
       <% if comment.user_id != current_user.id %>
         | <strong><span data-controller="comment" data-action="click->comment#set_reply_id" class="cursor-pointer click-reply" data-uname="<%= comment.user&.name %>" data-vid="<%= comment.user_id %>">Reply</span></strong>

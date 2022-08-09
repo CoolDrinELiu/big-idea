@@ -7,7 +7,6 @@ export default class Wysiwyg extends Component{
   }
 
   render() {
-    console.log(this.proprs)
     return h`
         <div>
             <input

@@ -6,7 +6,7 @@ class PostsController < ApplicationController
     @group = @post.group
     authenticate_user_from_group!
 
-    comments = @post.comments.includes(:user, :reply).created_at_desc
+    comments = @post.comments.includes(:user, :reply_to).created_at_desc
 
     @pagy, @comments = pagy(comments)
   end

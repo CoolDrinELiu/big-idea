@@ -12,6 +12,7 @@ export default class extends Controller {
     reply_info.style.display = 'block'
     reply_id_input.value = reply_id
     reply_ele.textContent = "> Reply to: " + reply_name
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   cancel_reply(){
