@@ -17,7 +17,6 @@ class Base < Grape::API
     error!({result: false, msg: e.message}, 200)
   end
   helpers ApiHelpers
-  mount Sessions
   mount Hello
 
 end
