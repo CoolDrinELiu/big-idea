@@ -8,5 +8,3 @@ import 'flowbite'
 
 import 'trix'
 
-import "channels"
-

@@ -45,8 +45,15 @@ class Group < ApplicationRecord
   end
 
   def request_join! user, direction = "active", inviter_id = nil
-    request = group_requests.new(user_id: user.id, direction: direction, inviter_id: inviter_id)
-    request.save
+    attrs_options = { user_id: user.id, direction: direction, inviter_id: inviter_id }
+    the_req = group_requests.where(attrs_options).first
+    # Can only be created the request when the request is rejected or it's not existed
+    if the_req.blank? || (the_req && !the_req.pending?)
+      request = group_requests.new(attrs_options)
+      request.save
+    else
+      true
+    end
   end
 
   def can_access_by? user

@@ -9,6 +9,7 @@ class Comment < ApplicationRecord
   after_create :create_notification
 
   def create_notification
-    Notification.create(item_id: id, item_type: self.class.name, user_id: user_id)
+    target_user_id = reply_id ? reply_id : post.user_id
+    Notification.create(item_id: id, item_type: self.class.name, user_id: target_user_id)
   end
 end

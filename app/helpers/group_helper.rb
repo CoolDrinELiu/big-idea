@@ -10,6 +10,10 @@ module GroupHelper
   end
 
   def inviting_request_of group
-    @pending_requests.passive.find_by(group_id: group.id)
+    group && @pending_requests&.passive&.find_by(group_id: group&.id)
+  end
+
+  def request_of_the_group group
+    @pending_requests&.pending.passive.select{|r| r.group_id == group.id}.first
   end
 end
