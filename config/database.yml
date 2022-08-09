@@ -4,14 +4,15 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: <%= ENV.fetch("DATABASE_URL") { "127.0.0.1" } %>
 
+
 development:
   <<: *default
   database: my_app_development
 
+test:
+  <<: *default
+  database: my_app_test
+
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
-
-staging:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  database: my_app_production
