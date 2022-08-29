@@ -6,8 +6,6 @@ class GroupRequest < ApplicationRecord
   # active means it was requested by the user_id
   enum direction: { active: 0, passive: 1}
 
-  after_create :create_notification
-
   def add_member!
     transaction do
       approved!
@@ -23,6 +21,8 @@ class GroupRequest < ApplicationRecord
   end
 
   private
+
+  after_create :create_notification
   def create_notification
     Notification.create(item_id: id, item_type: self.class.name, user_id: user_id) if direction == "passive"
   end

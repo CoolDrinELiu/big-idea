@@ -4,8 +4,6 @@ class Group < ApplicationRecord
   has_many :group_requests, dependent: :destroy
   has_many :posts, dependent: :destroy
 
-  after_create :put_owner_in_members
-
   scope :created_at_desc, -> { order(created_at: :desc) }
 
   enum access_control: {in_public: 0, in_private: 1, in_secret: 2}
@@ -62,8 +60,10 @@ class Group < ApplicationRecord
     return true if has_member? user.id
     return false
   end
+
   private
 
+  after_create :put_owner_in_members
   def put_owner_in_members
     user_group_relationships.create(user_id: user_id, group_id: id) if user_id
   end

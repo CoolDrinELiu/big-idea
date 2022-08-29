@@ -6,10 +6,14 @@ class Comment < ApplicationRecord
 
   scope :created_at_desc, -> { order(created_at: :desc) }
 
-  after_create :create_notification
+  has_rich_text :content
 
+  after_create :create_notification
   def create_notification
-    target_user_id = reply_id ? reply_id : post.user_id
-    Notification.create(item_id: id, item_type: self.class.name, user_id: target_user_id)
+    Notification.create(item_id: id, item_type: self.class.name, user_id: user_id_to_update)
+  end
+
+  def user_id_to_update
+    reply_id ? reply_id : post.user_id
   end
 end

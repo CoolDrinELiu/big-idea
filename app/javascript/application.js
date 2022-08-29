@@ -8,3 +8,4 @@ import 'flowbite'
 
 import 'trix'
 
+import "@rails/actiontext"

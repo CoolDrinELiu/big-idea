@@ -5,6 +5,8 @@ class Post < ApplicationRecord
 
   scope :created_at_desc, -> { order(created_at: :desc) }
 
+  has_rich_text :content
+
   def able_to_remove_by? user
     user.posts.ids.include?(id) || user.admin?
   end

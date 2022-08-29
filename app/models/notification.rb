@@ -2,8 +2,6 @@ class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :item, :polymorphic => true
 
-  after_commit :broadcast_me, on: :create
-
   scope :created_at_desc, -> { order(created_at: :desc) }
 
   def output_data
@@ -31,6 +29,8 @@ class Notification < ApplicationRecord
   end
 
   private
+
+  after_commit :broadcast_me, on: :create
   def broadcast_me
     ActionCable.server.broadcast "UserNotificationChannel.#{channel_user_id}", { message: "New reply is coming" } if !post_or_comment_by_self?
     ActionCable.server.broadcast "UserNotificationChannel.#{channel_user_id}", { message: "Someone invited you" } if item_type == "GroupRequest"

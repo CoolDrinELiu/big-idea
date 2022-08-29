@@ -19,7 +19,7 @@
       <%= f.hidden_field :post_id, value: @post.id %>
       <%= f.hidden_field :reply_id %>
       <div class="mt-5 w-10/12" id="wysiwyg-box-comment">
-        <%= f.text_area :content, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
+        <%= f.rich_text_area :content, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
       </div>
       <div id="reply-info" class="hidden">
         <span class="text-gray-500 dark:text-gray-400" id="reply-to-name"></span>
