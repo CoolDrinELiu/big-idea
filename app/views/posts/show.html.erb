@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full">
+<div class="flex flex-col w-full" data-controller="comment">
   <%= link_to 'Back', :back, class: "w-20 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800", data: {turbo: false} %>
   <div class="max-w-2xl w-full mt-5 block p-6 dark:text-white max-w-4xl bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <h5 class="break-words mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= @post.title %></h5>
@@ -17,13 +17,13 @@
   <div class="w-2/3 mt-5 block">
     <%= form_for Comment.new, class: "space-y-6" do |f| %>
       <%= f.hidden_field :post_id, value: @post.id %>
-      <%= f.hidden_field :reply_id %>
+      <%= f.hidden_field :reply_id, "data-comment-target" => "replyIdInput" %>
       <div class="mt-5 w-10/12" id="wysiwyg-box-comment">
         <%= f.rich_text_area :content, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", required: true %>
       </div>
-      <div id="reply-info" class="hidden">
-        <span class="text-gray-500 dark:text-gray-400" id="reply-to-name"></span>
-        <span data-controller="comment" data-action="click->comment#cancel_reply" class="cursor-pointer pl-6 inline-block" id="reply-cancel">X</span>
+      <div class="hidden" data-comment-target="replyInfo">
+        <span class="text-gray-500 dark:text-gray-400" data-comment-target="replyToName"></span>
+        <span data-action="click->comment#cancel_reply" class="cursor-pointer pl-6 inline-block" id="reply-cancel">X</span>
       </div>
       
       <%= f.submit "Comment", class: "mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",

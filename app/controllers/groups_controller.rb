@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
     record = current_user.owned_groups.new(permitted_group_params)
     @message_type, @message =
       if record.save
-        [:valid, "##{record.name} created successfully. Do you want to create a new one again?"]
+        [:valid, "##{record.name} created successfully."]
       else
         [:invalid, record.errors&.full_messages&.join("<br>")]
       end

@@ -18,7 +18,7 @@
         </strong>
       <% end %>
       <% if comment.user_id != current_user.id %>
-        | <strong><span data-controller="comment" data-action="click->comment#set_reply_id" class="cursor-pointer click-reply" data-uname="<%= comment.user&.name %>" data-vid="<%= comment.user_id %>">Reply</span></strong>
+        | <strong><span data-action="click->comment#set_reply_id" class="cursor-pointer" data-uname="<%= comment.user&.name %>" data-vid="<%= comment.user_id %>">Reply</span></strong>
       <% end %>
     </span>
   </div>
