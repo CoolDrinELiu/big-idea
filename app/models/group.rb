@@ -61,6 +61,9 @@ class Group < ApplicationRecord
     return false
   end
 
+  def create_post attributes
+    posts.create attributes
+  end
   private
 
   after_create :put_owner_in_members

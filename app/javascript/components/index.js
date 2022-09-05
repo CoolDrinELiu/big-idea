@@ -1,5 +1,5 @@
-import { render } from "react-dom"
-import h from "components/htm_create_element"
+// import { render } from "react-dom"
+// import h from "components/htm_create_element"
 
 // import Wysiwyg from "components/wysiwyg"
 
@@ -19,7 +19,3 @@ import h from "components/htm_create_element"
 //     document.getElementById("wysiwyg-box-comment")
 //   )
 // }
-render(
-      h `<div class='123'>11111</div>`,
-      document.getElementById("root")
-    )

@@ -13,7 +13,7 @@ class PostsController < ApplicationController
 
   def create
     @group = Group.find(permitted_params[:group_id])
-    @group.posts.create(permitted_params.merge(user_id: current_user.id))
+    @group.create_post permitted_params.merge(user_id: current_user.id)
     @pagy, @posts = pagy(@group.posts.created_at_desc)
   end
 

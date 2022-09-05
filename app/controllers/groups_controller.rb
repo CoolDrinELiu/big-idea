@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
     record = current_user.owned_groups.new(permitted_group_params)
     @message_type, @message =
       if record.save
-        [:valid, "Group ##{record.name} saved successfully"]
+        [:valid, "##{record.name} created successfully. Do you want to create a new one again?"]
       else
         [:invalid, record.errors&.full_messages&.join("<br>")]
       end
@@ -84,6 +84,7 @@ class GroupsController < ApplicationController
     authenticate_user_from_group!
 
     user_to_invite = User.find_by(email: params[:email])
+
     @invite_stauts =
       if user_to_invite
         @group.request_join! user_to_invite, "passive", current_user.id
